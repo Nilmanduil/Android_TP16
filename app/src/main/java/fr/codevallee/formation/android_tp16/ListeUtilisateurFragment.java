@@ -7,6 +7,10 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
 
 
 /**
@@ -63,8 +67,20 @@ public class ListeUtilisateurFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_liste_utilisateur, container, false);
+
+        String[] utilisateurs = {"William Wallace", "Jeanne d'Arc", "Arthur Pendragon", "Nostradamus", "Galileo Galilei", "Jeanne Poisson", "William Shakespeare", "Lewis Caroll", "Wolfgang Amadeus Mozart", "Eugène Delacroix"};
+        ArrayList<String> utilisateursArray = new ArrayList<>(utilisateurs.length);
+        for (String utilisateur : utilisateurs) {
+            utilisateursArray.add(utilisateur);
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(ListeUtilisateurFragment.super.getContext(), android.R.layout.simple_list_item_1, utilisateursArray);
+        ListView usersList = (ListView) view.findViewById(R.id.users_list);
+        usersList.setAdapter(adapter);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_liste_utilisateur, container, false);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
