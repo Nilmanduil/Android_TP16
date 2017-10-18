@@ -1,0 +1,75 @@
+# Le but de ce TP 16 est de créer une application avec des Fragments. 
+# 3 heures
+
+# Version XML avec deux fragments.
+
+1 - Créer une nouveau projet TP16App "Empty Activity"
+  - Modifier la classe pour hérite de FragmentActivity
+  (attention au package : import android.support.v4.app.FragmentActivity;)
+
+2 - Modifier le Layout pour un LinearLayout
+
+3 - Ajouter dans le Layout deux balises Fragment. 
+		- 1 layout avec un poids de 1 et l'autre de 2 :
+			name = fr.formation.tp16.fragment.ListeUtilisateurFragment
+				et
+			name = fr.formation.tp16.fragment.UtilisateurFragment
+
+4 - Créer les fragements correspondants :
+			- fr.formation.tp16.fragment.ListeUtilisateurFragment
+			- fr.formation.tp16.fragment.UtilisateurFragment
+	Dans ces fragments, afficher juste un label avec le nom du fragment.
+
+	Le code d'un fragment ressemble à :
+
+	public class UtilisateurFragment extends Fragment {
+
+	    @Override
+	    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+	        View view = inflater.inflate(R.layout.fragment_utilisateur, container, false);
+	        return view;
+	    }
+	}
+
+5 - Essayer votre application sur mobile et sur tablette. Quel est le problème ?
+
+# Adaptons l'affichage à une tablette avec les fragments dynamiques :
+
+6 - Ajouter un layout pour ecran large à votre activité principale
+
+	- pour écran large, nous affichons le même layout et contenu
+
+	- pour les autres écrans, nous affichons :
+
+	<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/fragment_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+    </FrameLayout>
+
+7 - Nous allons dynamiquement modifier le fragment affiché sur un écran non large ainsi :
+
+    Dans l'activité principale, ajouter ce code dans la méthode onCreate :
+
+        setContentView(....);
+
+        if (findViewById(R.id.fragment_container) != null) { // Si layout pour écran non large alors :
+
+            if (savedInstanceState != null) {
+                return;
+            }
+
+            ListeUtilisateurFragment firstFragment = new ListeUtilisateurFragment();
+            firstFragment.setArguments(getIntent().getExtras());
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, firstFragment).commit();
+        }
+
+8 - Essayer votre application sur mobile et sur tablette. Quel est le problème ?
+
+9 - Adapter votre application pour mettre en place une application affichant des utilisateurs.
+	à partir du tutoriel de Google : https://developer.android.com/training/basics/fragments/fragment-ui.html
+	Vous pouvez vous aider aussi de ce cours : http://zenol.fr/teaching/android_lesson/cours4.pdf
+
+# En passant par Android Studio
