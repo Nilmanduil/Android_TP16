@@ -7,7 +7,13 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.TextView;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URLEncoder;
 
 
 /**
@@ -62,6 +68,10 @@ public class UtilisateurFragment extends Fragment {
                 TextView text = (TextView) view.findViewById(R.id.utilisateurFragmentText);
                 text.setText(userName);
             }
+
+            String formattedUserName = URLEncoder.encode(userName.replaceAll(" ", "_"));
+            WebView web = (WebView) view.findViewById(R.id.utilisateurFragmentWeb);
+            web.loadUrl("https://fr.wikipedia.org/wiki/" + formattedUserName);
         }
         //*/
 

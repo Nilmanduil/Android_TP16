@@ -8,7 +8,12 @@
     <TextView
         android:id="@+id/utilisateurFragmentText"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="" />
+
+    <WebView
+        android:id="@+id/utilisateurFragmentWeb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></WebView>
 
 </FrameLayout>
