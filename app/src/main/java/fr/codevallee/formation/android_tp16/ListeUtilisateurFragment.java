@@ -1,5 +1,7 @@
 package fr.codevallee.formation.android_tp16;
 
+import android.app.Activity;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,6 +9,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -32,6 +35,12 @@ public class ListeUtilisateurFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    OnUserSelectedListener mCallback;
+
+    public interface OnUserSelectedListener {
+        public void onUserSelected(int position);
+    }
 
     public ListeUtilisateurFragment() {
         // Required empty public constructor
@@ -70,7 +79,7 @@ public class ListeUtilisateurFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_liste_utilisateur, container, false);
 
-        String[] utilisateurs = {"William Wallace", "Jeanne d'Arc", "Arthur Pendragon", "Nostradamus", "Galileo Galilei", "Jeanne Poisson", "William Shakespeare", "Lewis Caroll", "Wolfgang Amadeus Mozart", "Eugène Delacroix"};
+        final String[] utilisateurs = {"William Wallace", "Jeanne d'Arc", "Arthur Pendragon", "Nostradamus", "Galileo Galilei", "Jeanne Poisson", "William Shakespeare", "Lewis Caroll", "Wolfgang Amadeus Mozart", "Eugène Delacroix"};
         ArrayList<String> utilisateursArray = new ArrayList<>(utilisateurs.length);
         for (String utilisateur : utilisateurs) {
             utilisateursArray.add(utilisateur);
@@ -79,7 +88,25 @@ public class ListeUtilisateurFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(ListeUtilisateurFragment.super.getContext(), android.R.layout.simple_list_item_1, utilisateursArray);
         ListView usersList = (ListView) view.findViewById(R.id.users_list);
         usersList.setAdapter(adapter);
-        // Inflate the layout for this fragment
+
+        usersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mCallback.onUserSelected(position);
+
+                UtilisateurFragment userFragment = new UtilisateurFragment();
+
+                Bundle args = new Bundle();
+                args.putString("userName", utilisateurs[position]);
+                userFragment.setArguments(args);
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, userFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
+
         return view;
     }
 
@@ -106,6 +133,20 @@ public class ListeUtilisateurFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }*/
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnUserSelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnUserSelectedListener");
+        }
+    }
 
     /**
      * This interface must be implemented by activities that contain this
