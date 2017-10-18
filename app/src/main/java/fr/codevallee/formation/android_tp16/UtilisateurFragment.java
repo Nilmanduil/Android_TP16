@@ -56,11 +56,14 @@ public class UtilisateurFragment extends Fragment {
 
         //*
         Bundle args = getArguments();
-        String userName = (String) args.get("userName");
-        if (userName != null) {
-            TextView text = (TextView) view.findViewById(R.id.utilisateurFragmentText);
-            text.setText(userName);
-        }//*/
+        if (args != null) {
+            String userName = (String) args.get("userName");
+            if (userName != null) {
+                TextView text = (TextView) view.findViewById(R.id.utilisateurFragmentText);
+                text.setText(userName);
+            }
+        }
+        //*/
 
         return view;
     }

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,7 +102,13 @@ public class ListeUtilisateurFragment extends Fragment {
                 userFragment.setArguments(args);
 
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, userFragment);
+
+                if (getFragmentManager().findFragmentById(R.id.utilisateurFragment) != null) {
+                    transaction.replace(R.id.utilisateurFragment, userFragment);
+                } else {
+                    transaction.replace(R.id.fragment_container, userFragment);
+                }
+
                 transaction.addToBackStack(null);
                 transaction.commit();
             }
